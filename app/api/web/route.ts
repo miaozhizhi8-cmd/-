@@ -1,0 +1,2 @@
+import {lookupWeb} from '../../../lib/progressive';
+export async function POST(request:Request){let name='';try{const raw=await request.json() as {name?:unknown};name=typeof raw.name==='string'?raw.name.trim():''}catch{}if(!/^[\p{Script=Han}·]{1,12}$/u.test(name))return Response.json({error:'名字格式无效'},{status:400});try{return Response.json(await lookupWeb(name),{headers:{'Cache-Control':'no-store'}})}catch{return Response.json({web:[],status:{source:'网络',ok:false,message:'网络检索失败或超时，不影响晋江结果'},time:new Date().toISOString()},{headers:{'Cache-Control':'no-store'}})}}
